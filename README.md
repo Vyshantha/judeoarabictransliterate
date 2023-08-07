@@ -6,7 +6,7 @@ Application can run on any type of device : ```Mobile, Tablet, Desktops and Lapt
 
 The application completes transliteration of texts pasted or typed into the text area from Judeo-Arabic ערביה יהודיה to Latin script and Arabic عربية يهودية script.
 
-The Arabic spoken & written in ```Judeo-Iraqi Arabic, Judeo-Moroccan Arabic, Judeo-Tripolitanian Arabic, Judeo-Yemeni Arabic```
+The Arabic spoken & written in ```Judeo-Iraqi Arabic, Judeo-Moroccan Arabic, Judeo-Tripolitanian Arabic, Judeo-Yemeni Arabic``` written using Hebrew script are supported with this application.
 
 - To use the Naskh Arabic font style, click the icon <img src="./Naskh.png" width="20px" height="20px" />
 - To use the Kufi Arabic font style, click the icon <img src="./Kufi.png" width="20px" height="20px" />
