@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">  
+    <title>Judeo-Arabic Transliterator : ערביה יהודיה  - الْعَرَبِيَّة </title>
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="ערביה יהודיה Judeo-Arabic ʿArabiya Yahūdiya عربية يهودية Transliterator" />
+    <meta property="og:image"              content="Star_of_David.png" />
+    <meta property="og:description"        content="ערביה יהודיה Judeo-Arabic ʿArabiya Yahūdiya عربية يهودية yhd – Judeo-Iraqi Arabic aju – Judeo-Moroccan Arabic yud – Judeo-Tripolitanian Arabic jye – Judeo-Yemeni Arabic" data-qmeta="keywords">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="Star_of_David.png">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link href='https://fonts.googleapis.com/css?family=Noto Serif Hebrew' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Noto Naskh Arabic' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Noto Kufi Arabic' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Noto Nastaliq Urdu' rel='stylesheet'>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <table class="tab">
+          <tr>
+            <td class="widthOfTab ">
+              <button class="tablinks" onclick="openTab(event, 'Judeo')" id="defaultOpen">ערביה יהודיה</button>
+            </td>
+            <td class="widthOfTab textArabic alignIcon">
+              <span class="tablinks arabicTab">عربية يهودية</span>
+            </td>
+          </tr>
+        </table>
+        <div class="text-input">
+          <div id="Judeo" class="tabcontent currentTab" dir="rtl">
+            <textarea spellcheck="false" id="textarea1" class="from-text" placeholder="Judeo-Arabic
+
+            יא אבאנא אלדי פי אלסמואת, יתׄקדס אסמך, תׄאתׄי מלכותׄך, תׄכון משיתך כסא פי אלסמא ועלי אלארץ, חבזנא אלדי ללעד אעטנא אליום, ואעפר לנא מא עלינו כמא נעפר נחן לםן לנא עליה, ולא תׄדחלנא אלתׄגארב, לכן נגנא מן אלשריר, לאן לך למלך ואלקות ואלמגד אלי אלאבד." dir="rtl" onkeyup="transliterate()"></textarea>
+          </div>
+          <div id="Arabic" class="arabicTabText" dir="rtl">
+            <textarea spellcheck="false" id="textarea2" readonly class="to-text" placeholder="عربية يهودية 
+
+            يا ابانا لدي في السموات, يثقدس اسمك, ثاثي ملكوثك, ثكون مشيتك كسا في السما وعلي الارص, حبزناء الدي للعد اعطنا اليوم, واغفر لنا ما علينو كما نغفر نحن لمن لنا عليه, ولا ثدحلناء لثجارب, لكن نجنا من لشرير, لن لك لملك والقوت والمجد الي لابد." dir="rtl" onkeyup="transliterate()"></textarea>
+          </div>
+        </div>
+        <ul class="controls">
+          <li class="row from">
+            <div class="icons tooltip" onmousedown="show1()">
+              <i id="from" class="fas fa-copy" onclick="copyContent1()"></i>
+              <div id="tooltip1" onmouseout="hide()" class="tooltiptext">
+                <span class="judeoCopyText">Copy Transliteration text - Judeo-Arabic</span>
+              </div>
+            </div>
+          </li>
+          <li class="row to">
+            <div class="arabicFonts">
+              <img src="Naskh.png" title="Naskh font type" alt="Naskh font type" width="30px" height="30x" onclick="loadNaskh()"/>
+              <img src="Kufi.png" title="Kufi font type" alt="Kufi font type" width="30px" height="30x" onclick="loadKufi()"/>
+              <img src="Nastaliq.png" title="Nastaliq font type" alt="Nastaliq font type" width="30px" height="30x" onclick="loadNastaliq()"/>
+            </div>
+            <div class="icons tooltip" onmousedown="show2()">
+              <i id="to" class="fas fa-copy" onclick="copyContent2()"></i>
+              <div id="tooltip2" onmouseout="hide()" class="tooltiptext">
+                <span class="textArabic">Copy Transliteration text - Arabic</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button onclick="transliterate()"><span class="footerArabic">الْعَرَبِيَّة</span> | <span class="footerJudeo">ערביה יהודיה</span></button>
+    </div>
+    
+    <div class="footerOfPage">
+      &nbsp;&nbsp;&nbsp;<img src="Judeo-Arabic-Flag.png" alt="ערביה יהודיה - World Scripts Explorer" class="footerImage" height="19px" width="32px"/>&nbsp;&nbsp;&nbsp;<a href="https://worldscriptsexplorer.page/he" target="_blank">ערביה יהודיה</a>&nbsp;&nbsp;&nbsp;2023 yshant&nbsp;&nbsp;&nbsp;
+    </div>
+    <script src="transliterate.js"></script>
+  </body>
+</html>
