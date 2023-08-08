@@ -104,6 +104,18 @@ function openTab(evt, localeName) {
   transliterate();
 }
 
+function loadRashi() {
+  document.getElementById("Judeo").classList.remove("textSerifHebrew");
+  document.getElementById("Judeo").classList.add("textRashi");
+  document.getElementById("textarea1").style.fontFamily = "Noto Rashi Hebrew";
+}
+
+function loadSerifHebrew() {
+  document.getElementById("Judeo").classList.remove("textRashi");
+  document.getElementById("Judeo").classList.add("textSerifHebrew");
+  document.getElementById("textarea1").style.fontFamily = "Noto Serif Hebrew";
+}
+
 function loadNaskh() {
   document.getElementById("Arabic").classList.remove("textNastaliq");
   document.getElementById("Arabic").classList.remove("textKufi");
