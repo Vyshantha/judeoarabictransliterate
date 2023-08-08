@@ -140,6 +140,18 @@ body{
 .arabicFonts:hover {
   cursor: pointer;
 }
+.hebrewFonts {
+  cursor: pointer;
+}
+.hebrewFonts:hover {
+  cursor: pointer;
+}
+.textSerifHebrew {
+  font-family: 'Noto Serif Hebrew';
+}
+.textRashi {
+  font-family: 'Noto Naskh Arabic';
+}
 .textNaskh {
   font-family: 'Noto Naskh Arabic';
 }
@@ -154,7 +166,7 @@ body{
   width: 60%;
 }
 .arabicTab {
-  font-size: 2em;
+  font-size: 1.6em;
 }
 .arabicTabSmallScreen {
   width: 100% !important;
