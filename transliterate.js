@@ -59,49 +59,57 @@ function transliterate() {
   // Transliteration used - https://en.wikipedia.org/wiki/Judeo-Arabic_dialects
   /* TODO : shadda & others - diacritics Judeo-Arabic text : https://en.wikipedia.org/wiki/Hebrew_diacritics */
 
-  /* SAMPLE -
-    אול מא כ̇לק אללה אלסמאואת ואלארץ̇
-    ואלארץ̇ כאנת גאמרה ומסתבחרה וט̇לאם עלי וג̇ה אלגמר וריח אללה תהב עלי ו
-    אלמא
-    ושא אללה אן יכון נור פכאן נור
-    פלמא עלם אללה אן אלנור ג̇יד פצל אללה בין אלנור ובין אלט̇לאם
-    וסמא אללה אוקאת אלנור נהארא ואוקאת אלט̇לאם סמאהא לילא ולמא מצ̇י מן אלליל ואלנהאר יום ואחד
-  
-    transcribiert -
-    I. جامره ( גאמרה ) != غامرة
-    II. الجمر ( אלגמר ) != الغمر
-  */
-
-  /* TODO / Fix
-    1. Article ال (al / el / il) : das Wort als Präfix angehängt (bsp. الكتاب "das Buch"). Jedoch kann der Artikel im Judäoarabischen auf verschiedene Weise geschrieben werden. Teilweise wird der Artikel genauso wie im Arabischen behandelt, also אל geschrieben und präfigiert (z.B. in der judäo-arabischen Bibelübersetzung des Saadiya Gaon אלסמאואת "die Himmel" oder ואלארץ̇ "und die Erde".
-    2. nordafrikanischen - den Artikel jedoch auch oft nur als ל gesehen z.B. ליהוד "die Juden" für اليهود in der nordafrikanischen Zeitung בית ישראל .
-    3. nordafrikanischen - Texten ist mir ferner noch die Doppelte Schreibung von verdoppelten Konsonanten aufgefallen. Z.B. אוול für أول (vergleiche jedoch אול bei Saadiya Gaon).
-    4. irakischen - der Artikel oft als אל als seperates Wort z.B. אל רחמאן anstelle von الرحمن hier schreibt das judäoarabische in רחמאן auch ein Alef, wo im Arabischen gar kein Alif ist. Teilweise erscheint אל auch als Ligatur ﭏ.
-    5. In manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
+  /* TODO 
+    In manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
   */
 
   if (localStorage.getItem("direction") == null || localStorage.getItem("direction") == undefined || localStorage.getItem("direction") == "judeo2arabic") {
     const judeoToArabic = {"0":"٠","1":"١","2":"٢","3":"٣","4":"٤","5":"٥","6":"٦","7":"٧","8":"٨","9":"٩"
-    ," ":" ",".":"٫",",":"٬",";":"؛","?":"؟","!":"!","\"":"\"","'":"'","(":"﴿",")":"﴾",":":"؞","+":"+","=":"=","/":"؍","-":"-","<":"<",">":">","*":"٭","|":"|","\\":"\\","€":"﷼","{":"{","}":"}","[":"[","]":"]","_":"_","%":"%","@":"@","ˆ":"ˆ","`":"`","´":"´","˜":"˜","·":"·","˙":"˙","¯":"¯","¨":"¨","˚":"˚","˝":"˝","ˇ":"ˇ","¸":"¸","˛":"˛","˘":"˘","’":"’","§":"؎","א":"ا","ב":"ب","ג":"ج","גׄ":"ج","גׄ":"غ","ג̇":"ج","ג̇":"غ","עׄ":"غ","רׄ":"غ","דׄ":"ذ","ע̇":"غ","ר̇":"غ","ד̇":"ذ","ד":"د","ה":"ه","ו":"و","וו":"و","ז":"ز","ח":"ح","זׄ":"ظ","טׄ":"ظ","ז̇":"ظ","ט̇":"ظ","ט":"ط","י":"ي","יי":"ي","חׄ":"خ","כׄ":"خ","ךׄ":"خ","ח̇":"خ","כ̇":"خ","ך̇":"خ","כ":"ك","ך":"ك","ל":"ل","מ":"م","ם":"م","נ":"ن","ן":"ن","ס":"س","ע":"ع","פ":"ف","ף":"ف","פׄ":"ف","ףׄ":"ف","צׄ":"ض","ץׄ":"ض","פ̇":"ف","ף̇":"ف","צ̇":"ض","ץ̇":"ض","צ":"ص","ץ":"ص","ק":"ق","ר":"ر","ש":"ش","ש֒":"ش","תׄ":"ث","ת̇":"ث","ת֒":"ث","ת":"ت","ﭏ":"ال","₪":"﷼","שׂ":"","שׁ":"","קִ":"","":"كׄ"} ;
+    ," ":" ",".":"٫",",":"٬",";":"؛","?":"؟","!":"!","\"":"\"","'":"'","(":"﴿",")":"﴾",":":"؞","+":"+","=":"=","/":"؍","-":"-","<":"<",">":">","*":"٭","|":"|","\\":"\\","€":"﷼","{":"{","}":"}","[":"[","]":"]","_":"_","%":"%","@":"@","ˆ":"ˆ","`":"`","´":"´","˜":"˜","·":"·","˙":"˙","¯":"¯","¨":"¨","˚":"˚","˝":"˝","ˇ":"ˇ","¸":"¸","˛":"˛","˘":"˘","’":"’","§":"؎","א":"ا","ב":"ب","ג":"ج","גׄ":"غ","עׄ":"غ","רׄ":"غ","ג̇":"غ","ע̇":"غ","ר̇":"غ","דׄ":"ذ","ד̇":"ذ","ד":"د","ה":"ه","ו":"و","וו":"و","ז":"ز","ח":"ح","זׄ":"ظ","טׄ":"ظ","ז̇":"ظ","ט̇":"ظ","ט":"ط","י":"ي","יי":"ي","חׄ":"خ","כׄ":"خ","ךׄ":"خ","ח̇":"خ","כ̇":"خ","ך̇":"خ","כ":"ك","ך":"ك","ל":"ل","מ":"م","ם":"م","נ":"ن","ן":"ن","ס":"س","ע":"ع","פ":"ف","ף":"ف","פׄ":"ف","ףׄ":"ف","צׄ":"ض","ץׄ":"ض","פ̇":"ف","ף̇":"ف","צ̇":"ض","ץ̇":"ض","צ":"ص","ץ":"ص","ק":"ق","ר":"ر","ש":"ش","ש֒":"ش","תׄ":"ث","ת̇":"ث","ת֒":"ث","ת":"ت","ﭏ":"ال","₪":"﷼","שׂ":"","שׁ":"","קִ":"","":"كׄ"} ;
 
     const consonantsWithDotAbove = ['ג','ד','ע','ר','ז','ט','ח','כ','ך','פ','ף','צ']
     
-    const niqqud = {" ְ  ": "", "  ְ ": "e", " ְ  ": "'", "  ֱ ": "e", " ֲ  ": "a", " ֳ  ": "o", " ִ  ": "i", " ֵ  ": "e", " ֵ  ": "ei", " ֶ  ": "e", " ֶ  ": "ei+yod", " ַ  ": "a", " ָ  ": "a", " ָ  ": "o", "  ֹ ": "o", "וֹ": "o", " ּ  ": "", "וּ": "u", " ֻ  ": "u", "ײַ": "", "  ֞ ": "", "  ֜ ": "", "׳": "", "  ֿ ": "", " ّ":""};
+    const niqqud = {" ְ  ": "", "  ְ ": "e", " ְ  ": "'", "  ֱ ": "e", " ֲ  ": "a", " ֳ  ": "o", " ִ  ": "i", " ֵ  ": "e", " ֵ  ": "ei", " ֶ  ": "e", " ֶ  ": "ei+yod", " ַ  ": "a", " ָ  ": "a", " ָ  ": "o", " ֹ  ": "o", "וֹ": "o", " ּ  ": "", "וּ": "u", " ֻ  ": "u", "ײַ": "", "  ֞ ": "", "  ֜ ": "", "׳": "", "  ֿ ": "", " ّ":""};
+
+    const typesOfWordDemarkers = [' ', '\n', ':', '؞', ';', '؛', ',', '٫' , '۔' , '.' , '٬', '؟', '!', '"', '\'', '(', ')', '[', ']', '{', '}', '/', '\\', undefined];
+
+    const nonjoining = ["ء","ا","آ","د","ذ","ر","ز","و"];
 
     let resultAr = "";
-    let textLa = document.getElementById("textarea1").value.toLowerCase();
-    for (let u = 0; u < textLa.length; u++) {
-      if (textLa[u].indexOf("\n") > -1) { // New Lines
+    let textJud = document.getElementById("textarea1").value.toLowerCase();
+    for (let u = 0; u < textJud.length; u++) {
+      if (textJud[u].indexOf("\n") > -1) { // New Lines
         resultAr = resultAr + "\n";
-      } else if (textLa[u] && textLa[u+1] && judeoToArabic[textLa[u] + textLa[u+1]]) {
-        resultAr = resultAr + judeoToArabic[textLa[u] + textLa[u+1]];
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+4]) > -1 && textJud[u+3] == "ל" && textJud[u+2] == "ו" && textJud[u+1] == "ו" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { 
+        console.log("nordafrikanischen - Texten אוול für أول")
+        resultAr = (!judeoToArabic[textJud[u+5]] || (judeoToArabic[textJud[u+5]] && typesOfWordDemarkers.indexOf(judeoToArabic[textJud[u+5]]) == -1) || (judeoToArabic[textJud[u+5]] && nonjoining.indexOf(judeoToArabic[textJud[u+5]]) > -1)) ? resultAr + "أول" :  resultAr + "أولـ";
+        u = u + 3;
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+3]) > -1 && textJud[u+2] == "ל" && textJud[u+1] == "ו" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) {  // 
+        console.log("nordafrikanischen - Texten für أول : vergleiche jedoch אול bei Saadiya Gaon")
+        resultAr = (!judeoToArabic[textJud[u+3]] || (judeoToArabic[textJud[u+3]] && typesOfWordDemarkers.indexOf(judeoToArabic[textJud[u+3]]) == -1) || (judeoToArabic[textJud[u+3]] && nonjoining.indexOf(judeoToArabic[textJud[u+4]]) > -1)) ? resultAr + "أول" :  resultAr + "أولـ";
+        u = u + 2;
+      } else if (textJud[u+2] == " " && textJud[u+1] == "ל" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { // irakischen - der Artikel oft als אל als seperates Wort z.B. אל רחמאן anstelle von الرحمن hier schreibt das judäoarabische in רחמאן auch ein Alef, wo im Arabischen gar kein Alif ist. Teilweise erscheint אל auch als Ligatur ﭏ.
+        console.log("irakischen - Texten der Artikel אל : seperates Wort")
+        resultAr = (!judeoToArabic[textJud[u+2]] || (judeoToArabic[textJud[u+2]] && typesOfWordDemarkers.indexOf(judeoToArabic[textJud[u+2]]) == -1) || (judeoToArabic[textJud[u+2]] && nonjoining.indexOf(judeoToArabic[textJud[u+2]]) > -1)) ? resultAr + "ال" :  resultAr + "الـ";
+        u = u + 2;
+        // TODO ligature ?
+      } else if (textJud[u] == "ל" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { // nordafrikanischen - den Artikel jedoch auch oft nur als ל gesehen z.B. ליהוד "die Juden" für اليهود in der nordafrikanischen Zeitung בית ישראל 
+        console.log("nordafrikanischen - Texten der Artikel nur als ל geschrieben")
+        resultAr = resultAr + "ال";
+      } else if (textJud[u] && textJud[u+1] && judeoToArabic[textJud[u] + textJud[u+1]]) {
+        console.log("Double letter consonant") // include joined Article ال (al / el / il)
+        resultAr = resultAr + judeoToArabic[textJud[u] + textJud[u+1]];
         u = u + 1;
-      } else if (textLa[u] && judeoToArabic[textLa[u]]) {
-        resultAr = resultAr + judeoToArabic[textLa[u]];
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ה" && judeoToArabic[textJud[u]]) {
+        console.log("Single letter tāʾ marbūṭa or character")
+        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " : resultAr + "ـة ";
+        u = u + 1;
+      } else if (textJud[u] && judeoToArabic[textJud[u]]) {
+        console.log("Single letter consonant or character")
+        resultAr = resultAr + judeoToArabic[textJud[u]];
       }
     }
     let unprocessed = (resultAr != "") ? resultAr.split(" ") : resultAr;
-    //let unprocessed = resultAr.split("\\n");
     let processed = "";
     for (let i = 0; i < unprocessed.length; i++) {
       if (unprocessed[i].indexOf("الا") > 0) {
@@ -111,6 +119,7 @@ function transliterate() {
         console.log("Multi-word suggestion when beginning with ا ");
         processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("ا","أ") + ' ';
       } else if (unprocessed[i].endsWith("ي")) {
+        console.log("Word end to be processed alef maksura")
         processed = processed + unprocessed[i].replace("ي","ى") + ' ';
       } else {
         console.log("Un processed word");
