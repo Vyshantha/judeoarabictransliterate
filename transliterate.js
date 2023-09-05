@@ -56,20 +56,45 @@ function transliterate() {
     document.getElementById("textarea2").innerHTML = "";
   }
 
-  // Transliteration used - https://en.wikipedia.org/wiki/Judeo-Arabic_dialects
-  /* TODO : shadda & others - diacritics Judeo-Arabic text : https://en.wikipedia.org/wiki/Hebrew_diacritics */
+  /* 
+    Published Works - 
+      Transliteration of Judeo-Arabic Texts into Arabic Script Using Recurrent Neural Networks : https://aclanthology.org/2020.wanlp-1.8.pdf
+      Processing Judeo-Arabic Texts : https://www.cs.tau.ac.il/~wolf/papers/JudeoArabic.pdf 
+    Transliteration used - https://en.wikipedia.org/wiki/Judeo-Arabic_dialects
+  */
+  
+  /* TODO : shadda & others - diacritics Judeo-Arabic text : https://en.wikipedia.org/wiki/Hebrew_diacritics
+    TODO : Include (diacritics & big letters) : https://en.wikipedia.org/wiki/Unicode_and_HTML_for_the_Hebrew_alphabet
+    TODO : Determine if Unicode fixed : https://unicode.org/L2/L2003/03299-hebrew-issues.pdf
+    TODO : In manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
+    TODO : Gimel - Jim & Ghayin (as suggestions)
+    TODO : H with 2-dot above ? - https://forum.glyphsapp.com/t/decompose-hebrew-accents/4293/5
+  */
 
-  /* TODO 
-    In manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
+  /* SAMPLE 
+    בשם י֞י אל עולם 
+    כ֜נת 
+    איّהא    
+    אלתלמיד̇ 
+    אלעזיז   ר֜  
+    יוסף ש֞צ ב֞ר 
+    יהודה 
+    נ֞ע
+    ﭏבלאד ללקראהֵ
   */
 
   if (localStorage.getItem("direction") == null || localStorage.getItem("direction") == undefined || localStorage.getItem("direction") == "judeo2arabic") {
     const judeoToArabic = {"0":"٠","1":"١","2":"٢","3":"٣","4":"٤","5":"٥","6":"٦","7":"٧","8":"٨","9":"٩"
-    ," ":" ",".":"٫",",":"٬",";":"؛","?":"؟","!":"!","\"":"\"","'":"'","(":"﴿",")":"﴾",":":"؞","+":"+","=":"=","/":"؍","-":"-","<":"<",">":">","*":"٭","|":"|","\\":"\\","€":"﷼","{":"{","}":"}","[":"[","]":"]","_":"_","%":"%","@":"@","ˆ":"ˆ","`":"`","´":"´","˜":"˜","·":"·","˙":"˙","¯":"¯","¨":"¨","˚":"˚","˝":"˝","ˇ":"ˇ","¸":"¸","˛":"˛","˘":"˘","’":"’","§":"؎","א":"ا","ב":"ب","ג":"ج","גׄ":"غ","עׄ":"غ","רׄ":"غ","ג̇":"غ","ע̇":"غ","ר̇":"غ","דׄ":"ذ","ד̇":"ذ","ד":"د","ה":"ه","ו":"و","וו":"و","ז":"ز","ח":"ح","זׄ":"ظ","טׄ":"ظ","ז̇":"ظ","ט̇":"ظ","ט":"ط","י":"ي","יי":"ي","חׄ":"خ","כׄ":"خ","ךׄ":"خ","ח̇":"خ","כ̇":"خ","ך̇":"خ","כ":"ك","ך":"ك","ל":"ل","מ":"م","ם":"م","נ":"ن","ן":"ن","ס":"س","ע":"ع","פ":"ف","ף":"ف","פׄ":"ف","ףׄ":"ف","צׄ":"ض","ץׄ":"ض","פ̇":"ف","ף̇":"ف","צ̇":"ض","ץ̇":"ض","צ":"ص","ץ":"ص","ק":"ق","ר":"ر","ש":"ش","ש֒":"ش","תׄ":"ث","ת̇":"ث","ת֒":"ث","ת":"ت","ﭏ":"ال","₪":"﷼","שׂ":"","שׁ":"","קִ":"","":"كׄ"} ;
+    ," ":" ",".":"٫",",":"٬",";":"؛","?":"؟","!":"!","\"":"\"","'":"'","(":"﴿",")":"﴾",":":"؞","+":"+","=":"=","/":"؍","-":"-","<":"<",">":">","*":"٭","|":"|","\\":"\\","€":"﷼","{":"{","}":"}","[":"[","]":"]","_":"_","%":"%","@":"@","ˆ":"ˆ","`":"`","´":"´","˜":"˜","·":"·","˙":"˙","¯":"¯","¨":"¨","˚":"˚","˝":"˝","ˇ":"ˇ","¸":"¸","˛":"˛","˘":"˘","’":"’","§":"؎","א":"ا","ב":"ب","ג":"ج","גׄ":"غ","עׄ":"غ","רׄ":"غ","ג̇":"غ","ע̇":"غ","ר̇":"غ","דׄ":"ذ","ד̇":"ذ","ד":"د","ה":"ه","ו":"و","וו":"و","ז":"ز","ח":"ح","זׄ":"ظ","טׄ":"ظ","ז̇":"ظ","ט̇":"ظ","ט":"ط","י":"ي","יי":"ي","חׄ":"خ","כׄ":"خ","ךׄ":"خ","ח̇":"خ","כ̇":"خ","ך̇":"خ","כ":"ك","ך":"ك","ל":"ل","מ":"م","ם":"م","נ":"ن","ן":"ن","ס":"س","ע":"ع","פ":"ف","ף":"ف","פׄ":"ف","ףׄ":"ف","צׄ":"ض","ץׄ":"ض","פ̇":"ف","ף̇":"ف","צ̇":"ض","ץ̇":"ض","צ":"ص","ץ":"ص","ק":"ق","ר":"ر","ש":"س","ש֒":"ش","תׄ":"ث","ת̇":"ث","ת֒":"ث","ת":"ت","ﭏ":"ال","₪":"﷼","שׂ":"","שׁ":"","קִ":"","":"كׄ", "ّ":"ّ"} ; 
 
     const consonantsWithDotAbove = ['ג','ד','ע','ר','ז','ט','ח','כ','ך','פ','ף','צ']
     
     const niqqud = {" ְ  ": "", "  ְ ": "e", " ְ  ": "'", "  ֱ ": "e", " ֲ  ": "a", " ֳ  ": "o", " ִ  ": "i", " ֵ  ": "e", " ֵ  ": "ei", " ֶ  ": "e", " ֶ  ": "ei+yod", " ַ  ": "a", " ָ  ": "a", " ָ  ": "o", " ֹ  ": "o", "וֹ": "o", " ּ  ": "", "וּ": "u", " ֻ  ": "u", "ײַ": "", "  ֞ ": "", "  ֜ ": "", "׳": "", "  ֿ ": "", " ّ":""};
+    /* Shadda with Hebrew letters
+      U+05D0 U+0651 אّ HEBREW LETTER ALEF + ARABIC SHADDA
+      U+05D1 U+0651 בّ HEBREW LETTER BET + ARABIC SHADDA
+      U+05D2 U+0651 גّ HEBREW LETTER GIMEL + ARABIC SHADDA
+    */
 
     const typesOfWordDemarkers = [' ', '\n', ':', '؞', ';', '؛', ',', '٫' , '۔' , '.' , '٬', '؟', '!', '"', '\'', '(', ')', '[', ']', '{', '}', '/', '\\', undefined];
 
