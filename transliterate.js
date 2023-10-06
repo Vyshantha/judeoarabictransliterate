@@ -61,40 +61,68 @@ function transliterate() {
       Transliteration of Judeo-Arabic Texts into Arabic Script Using Recurrent Neural Networks : https://aclanthology.org/2020.wanlp-1.8.pdf
       Processing Judeo-Arabic Texts : https://www.cs.tau.ac.il/~wolf/papers/JudeoArabic.pdf 
     Transliteration used - https://en.wikipedia.org/wiki/Judeo-Arabic_dialects
+
+    Processing Judeo-Arabic Texts : Bar et. al., this Judeo-Arabic App does BETTER  :
+     It is clear that our system learned how to deal with most of the common ambiguities; however, it still confuses about whether to place hamza (the glottal stop) at the end of a word or not, and it still cannot properly predicts when to use the letter (ha) or (ta marbuta) at the end of a word. 
+
+    Focus on Mediaeval Judeo-Arabic to be included into the App
+
+    - NOT required Hebrew letter combination ( "־" , "׀" , "׃" , "׆" , "װ" , "ױ" , "״" , "׳" , "ﬞ" , "יִ" , "﬩" , "ײַ" , "ﬠ" , "שׁ" , "שׂ" , "שּׁ" , "שּׂ" , "אַ" , "אָ" , "אּ" , "בּ" , "גּ" , "דּ" , "הּ" , "וּ" , "זּ" , "טּ" , "יּ" , "ךּ" , "כּ" , "לּ" , "מּ" , "נּ" , "סּ" , "ףּ" , "פּ" , "צּ" , "קּ" , "רּ" , "שּ" , "תּ" , "וֹ" , "בֿ" , "כֿ" , "פֿ" ) : https://forum.glyphsapp.com/t/decompose-hebrew-accents/4293/5
+      https://en.wikipedia.org/wiki/Unicode_and_HTML_for_the_Hebrew_alphabet
   */
   
-  /* TODO : shadda & others - diacritics Judeo-Arabic text : https://en.wikipedia.org/wiki/Hebrew_diacritics
-    TODO : Include (diacritics & big letters) : https://en.wikipedia.org/wiki/Unicode_and_HTML_for_the_Hebrew_alphabet
-    TODO : Determine if Unicode fixed : https://unicode.org/L2/L2003/03299-hebrew-issues.pdf
-    TODO : In manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
-    TODO : Gimel - Jim & Ghayin (as suggestions)
-    TODO : H with 2-dot above ? - https://forum.glyphsapp.com/t/decompose-hebrew-accents/4293/5
+  /*  
+
+  TODO CORRECTIONS 
+   1. עולם : أل عولم = ألـعولم 
+   2. أدوناي : יהוה = adonay / ה / יי / ד
+   3. איّהא : إِيَّاهَا
+   4. אל : al = ال
+   5. ta-marbuta : דלאלת אלחאירין = دلالة الحائرين  
+   6. al - ﭏ = ال
+   7. capital or paragraph פרק 'Aleph' or פצל 'Bet' mostly a number
+   8. double לל then add لّ
+   9. work with removed diacritics in Hebrew
+  10. as suggestions ג - ج & غ 
+  11. in manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
+
+  DETERMINE via discussion Mattias/David/Rafael
+    a. Hebrew woerter > direkt transkibiert oder uebersetzen
+    b. Hebrew abkurzungen ? ר׳ = Rabbi ; ש״צ = https://www.halachipedia.com/index.php?title=Shaliach_Tzibur ב״ר = Ben Rabbi = Sohn von Rabbi ; נ״ע = נשמתו עדן   abkurzung
+    c. BL in hebrew then should be translated or transliterated ?
+    d. determine if anything needs to be fixed : https://unicode.org/L2/L2003/03299-hebrew-issues.pdf
+
+  Problems with UNICODE > scope for improvement & new L2 for Unicode
+    Arabic diakritics used in Hebrew - find FONT ? Judeo-arabisch > typing problem ta-marbuta, harakat, maddah, shadda-*
+  
+  VALIDATION TEST ground truth await Arabic transliteration
+    I Judeo-arabisch :
+      https://www.sefaria.org/Tafsir_Rasag%2C_Genesis.1.27?lang=he
+      https://www.biblejew.com/wp-content/uploads/2016/06/A-Sample-Chapter-Genesis.pdf 
+   II Auto-correct for non-standard words in text > A Dictionary of Mediaeval Judaeo-Arabic Texts (no online only book)
+  
   */
 
   /* SAMPLE 
-    בשם י֞י אל עולם 
-    כ֜נת 
+    בשם י״י אל עולם 
+    כ׳נת 
     איّהא    
     אלתלמיד̇ 
-    אלעזיז   ר֜  
-    יוסף ש֞צ ב֞ר 
+    אלעזיז   ר׳  
+    יוסף ש״צ ב״ר 
     יהודה 
-    נ֞ע
-    ﭏבלאד ללקראהֵ
+    נ״ע
+    ﭏבלאד ללקראה
   */
 
   if (localStorage.getItem("direction") == null || localStorage.getItem("direction") == undefined || localStorage.getItem("direction") == "judeo2arabic") {
     const judeoToArabic = {"0":"٠","1":"١","2":"٢","3":"٣","4":"٤","5":"٥","6":"٦","7":"٧","8":"٨","9":"٩"
     ," ":" ",".":"٫",",":"٬",";":"؛","?":"؟","!":"!","\"":"\"","'":"'","(":"﴿",")":"﴾",":":"؞","+":"+","=":"=","/":"؍","-":"-","<":"<",">":">","*":"٭","|":"|","\\":"\\","€":"﷼","{":"{","}":"}","[":"[","]":"]","_":"_","%":"%","@":"@","ˆ":"ˆ","`":"`","´":"´","˜":"˜","·":"·","˙":"˙","¯":"¯","¨":"¨","˚":"˚","˝":"˝","ˇ":"ˇ","¸":"¸","˛":"˛","˘":"˘","’":"’","§":"؎","א":"ا","ﬡ":"ا","ב":"ب","ג":"ج","גׄ":"غ","עׄ":"غ","רׄ":"غ","ג̇":"غ","ע̇":"غ","ר̇":"غ","דׄ":"ذ","ד̇":"ذ","ד":"د","ﬢ":"د","ה":"ه","ﬣ":"ه","ו":"و","וו":"و","ז":"ز","ח":"ح","זׄ":"ظ","טׄ":"ظ","ז̇":"ظ","ט̇":"ظ","ט":"ط","י":"ي","יי":"ي","חׄ":"خ","כׄ":"خ","ךׄ":"خ","ח̇":"خ","כ̇":"خ","ך̇":"خ","כ":"ك","ﬤ":"ك","ך":"ك","ל":"ل","ﬥ":"ل","מ":"م","ם":"م","ﬦ":"م","נ":"ن","ן":"ن","ס":"س","ע":"ع","ﬠ":"ع","פ":"ف","ף":"ف","פׄ":"ف","ףׄ":"ف","צׄ":"ض","ץׄ":"ض","פ̇":"ف","ף̇":"ف","צ̇":"ض","ץ̇":"ض","צ":"ص","ץ":"ص","ק":"ق","ר":"ر","ﬧ":"ر","ש":"س","ש֒":"ش","תׄ":"ث","ת̇":"ث","ת֒":"ث","ת":"ت","ﬨ":"ت","ﭏ":"ال","₪":"﷼","שׂ":"","שׁ":"","קִ":"","":"كׄ", "ّ":"ّ"} ; 
 
-    const consonantsWithDotAbove = ['ג','ד','ע','ר','ז','ט','ח','כ','ך','פ','ף','צ']
+    const consonantsWithDotAbove = ['ג','ד','ע','ר','ז','ט','ח','כ','ך','פ','ף','צ'];
     
-    const niqqud = {" ְ  ": "", "  ְ ": "e", " ְ  ": "'", "  ֱ ": "e", " ֲ  ": "a", " ֳ  ": "o", " ִ  ": "i", " ֵ  ": "e", " ֵ  ": "ei", " ֶ  ": "e", " ֶ  ": "ei+yod", " ַ  ": "a", " ָ  ": "a", " ָ  ": "o", " ֹ  ": "o", "וֹ": "o", " ּ  ": "", "וּ": "u", " ֻ  ": "u", "ײַ": "", "  ֞ ": "", "  ֜ ": "", "׳": "", "  ֿ ": "", " ّ":""};
-    /* Shadda with Hebrew letters
-      U+05D0 U+0651 אّ HEBREW LETTER ALEF + ARABIC SHADDA
-      U+05D1 U+0651 בّ HEBREW LETTER BET + ARABIC SHADDA
-      U+05D2 U+0651 גّ HEBREW LETTER GIMEL + ARABIC SHADDA
-    */
+    const niqqud = {" ְ  ": "", "  ְ ": "e", " ְ  ": "'", "  ֱ ": "e", " ֲ  ": "a", " ֳ  ": "o", " ִ  ": "i", " ֵ  ": "e", " ֵ  ": "ei", " ֶ  ": "e", " ֶ  ": "ei+yod", " ַ  ": "a", " ָ  ": "a", " ָ  ": "o", " ֹ  ": "o", "וֹ": "o", " ּ  ": "", "וּ": "u", 
+    "  ֻ ": "u", "ײַ": "", "  ֞ ": "", "  ֜ ": "", "׳": "", "  ֿ ": "", " ّ":""};
 
     const typesOfWordDemarkers = [' ', '\n', ':', '؞', ';', '؛', ',', '٫' , '۔' , '.' , '٬', '؟', '!', '"', '\'', '(', ')', '[', ']', '{', '}', '/', '\\', undefined];
 
