@@ -48,6 +48,8 @@ function copyContent2() {
   navigator.clipboard.writeText(document.getElementById("textarea2").value);
 }
 
+var vocalisedText = "";
+
 function transliterate() {
   if (document.getElementById("textarea1").value.indexOf("script>") > -1 || document.getElementById("textarea2").value.indexOf("script>") > -1) {
     document.getElementById("textarea1").value = "";
@@ -85,19 +87,16 @@ function transliterate() {
   
   /*  
 
-  TODO CORRECTIONS 
-   1. Suggestions : ta-marbuta (-h & -at) and for ג - ج & غ 
-   2. Shadda for double letters לל = لّ
-   3. No diacritics in Hebrew as shadda, harakat, maddah do not exist in Hebrew Unicode
+  TODO CORRECTIONS : Shadda for double letters לל = لّ
+
+  Problems with UNICODE > scope for improvement & new L2 for Unicode
+    Arabic diakritics used in Hebrew - typing problem ta-marbuta, harakat, maddah, shadda-*
 
   "David sprach sich dafür aus die hebräische Komponente des Judäo-arabischen NICHT zu übersetzen, sondern einfach nur zu transliterieren und so stehen lassen.""
     a. Hebrew woerter > direkt transkibiert oder uebersetzen : أدوناي : adonay =  י״י / יהוה / ה / יי / ד
     b. Hebrew abkurzungen ? ר׳ = Rabbi ; ש״צ = https://www.halachipedia.com/index.php?title=Shaliach_Tzibur ב״ר = Ben Rabbi = Sohn von Rabbi ; נ״ע = נשמתו עדן   abkurzung
     c. BL in hebrew then should be translated or transliterated ?
     d. determine if anything needs to be fixed : https://unicode.org/L2/L2003/03299-hebrew-issues.pdf
-
-  Problems with UNICODE > scope for improvement & new L2 for Unicode
-    Arabic diakritics used in Hebrew - find FONT ? Judeo-arabisch > typing problem ta-marbuta, harakat, maddah, shadda-*
   
   VALIDATION TEST ground truth await Arabic transliteration
     I Judeo-arabisch :
@@ -159,29 +158,29 @@ function transliterate() {
         console.log("nordafrikanischen - Texten אוול für أول")
         resultAr = (!judeoToArabic[textJud[u+5]] || (judeoToArabic[textJud[u+5]] && typesOfWordDemarkers.indexOf(judeoToArabic[textJud[u+5]]) == -1) || (judeoToArabic[textJud[u+5]] && nonjoining.indexOf(judeoToArabic[textJud[u+5]]) > -1)) ? resultAr + "أول" :  resultAr + "أولـ";
         u = u + 3;
-      } else if (typesOfWordDemarkers.indexOf(textJud[u+3]) > -1 && textJud[u+2] == "ל" && textJud[u+1] == "ו" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) {  // 
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+3]) > -1 && textJud[u+2] == "ל" && textJud[u+1] == "ו" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { 
         console.log("nordafrikanischen - Texten für أول : vergleiche jedoch אול bei Saadiya Gaon")
         resultAr = resultAr + "أول"; 
         u = u + 2;
-      } else if (textJud[u+2] == " " && textJud[u+1] == "ל" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { // irakischen - der Artikel oft als אל als seperates Wort z.B. אל רחמאן anstelle von الرحمن hier schreibt das judäoarabische in רחמאן auch ein Alef, wo im Arabischen gar kein Alif ist. Teilweise erscheint אל auch als Ligatur ﭏ.
+      } else if (textJud[u+2] == " " && textJud[u+1] == "ל" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { 
         console.log("irakischen - Texten der Artikel אל : seperates Wort")
-        resultAr = (!judeoToArabic[textJud[u+2]] || (judeoToArabic[textJud[u+2]] && typesOfWordDemarkers.indexOf(judeoToArabic[textJud[u+2]]) == -1) || (judeoToArabic[textJud[u+2]] && nonjoining.indexOf(judeoToArabic[textJud[u+2]]) > -1)) ? resultAr + "ال" :  resultAr + "ال ";
+        resultAr = (!judeoToArabic[textJud[u+2]] || (judeoToArabic[textJud[u+2]] && typesOfWordDemarkers.indexOf(judeoToArabic[textJud[u+2]]) == -1) || (judeoToArabic[textJud[u+2]] && nonjoining.indexOf(judeoToArabic[textJud[u+2]]) > -1)) ? resultAr + "ال" :  resultAr + "ال "; // irakischen - der Artikel oft als אל als seperates Wort z.B. אל רחמאן anstelle von الرحمن hier schreibt das judäoarabische in רחמאן auch ein Alef, wo im Arabischen gar kein Alif ist. Teilweise erscheint אל auch als Ligatur ﭏ.
         u = u + 2;
         // TODO ligature ?
-      } else if (textJud[u] == "ל" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { // nordafrikanischen - den Artikel jedoch auch oft nur als ל gesehen z.B. ליהוד "die Juden" für اليهود in der nordafrikanischen Zeitung בית ישראל 
+      } else if (textJud[u] == "ל" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { 
         console.log("nordafrikanischen - Texten der Artikel nur als ל geschrieben")
-        resultAr = resultAr + "ال ";
+        resultAr = resultAr + "ال "; // nordafrikanischen - den Artikel jedoch auch oft nur als ל gesehen z.B. ליהוד "die Juden" für اليهود in der nordafrikanischen Zeitung בית ישראל 
       } else if (textJud[u] && textJud[u+1] && judeoToArabic[textJud[u] + textJud[u+1]]) {
         console.log("Double letter consonant") // include joined Article ال (al / el / il)
         resultAr = resultAr + judeoToArabic[textJud[u] + textJud[u+1]];
         u = u + 1;
-      } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ה" && judeoToArabic[textJud[u]]) { // TODO per word basis suggestion
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ה" && judeoToArabic[textJud[u]]) {
         console.log("Single letter tāʾ marbūṭa or character - ה case with suggestions")
-        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " + resultAr + "ه " : resultAr + "ـة " + resultAr + "ـه ";
+        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " : resultAr + "ـة ";
         u = u + 1;
-      } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ת") { // TODO per word basis suggestion
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ת") {
         console.log("Single letter tāʾ marbūṭa or character - ת case with suggestions")
-        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " + resultAr + "ه " : resultAr + "ـة " + resultAr + "ـه ";
+        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " : resultAr + "ـة ";
       } else if (textJud[u] == "ّ" && textJud[u-1] == "י") {
         console.log("Yod followed by Shadda then alef to be included")
         resultAr = resultAr + "ّ" + "ا";
@@ -201,9 +200,6 @@ function transliterate() {
       } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && judeoToArabic[textJud[u]] && textJud[u-1] == " " && ((textJud[u-2] == "ק" && textJud[u-3] == "ר" && textJud[u-4] == "פ") || (textJud[u-2] == "ל" && textJud[u-3] == "צ" && textJud[u-4] == "פ"))) {
         console.log("1 digit number representation with  letter consonant after capital or paragraph פרק or פצל")
         resultAr = resultAr + indoToArabicNumerals[numeralsIndo[textJud[u]]];
-      } else if ((textJud[u+1] == "\u0307" && textJud[u] == "ג") || textJud[u] == "ג̇" || textJud[u] == "גׄ") { // TODO per word basis suggestion
-        console.log("גׄ suggestions")
-        resultAr = resultAr + "غ" + resultAr + "ج";
       } else if (textJud[u] == "ס" && textJud[u-1] == "נ" && textJud[u-2] == "ו") {
         console.log("nicht emphatische Konsonanten und halb emphatisch selten Texte")
         resultAr = resultAr + "ص"; // in manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
@@ -221,9 +217,21 @@ function transliterate() {
       } else if (unprocessed[i].startsWith("ا")) {
         console.log("Multi-word suggestion when beginning with ا ");
         processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("ا","أ") + ' ';
-      } else */ if (unprocessed[i].endsWith("ي")) {
+      } else */
+
+      if (unprocessed[i].indexOf("غ") > -1) {
+        console.log("Suggestions - גׄ case")
+        processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("غ", "ج") + ' ';
+      }
+      
+      if (unprocessed[i].endsWith("ي")) {
         console.log("Word end to be processed alef maksura")
         processed = processed + unprocessed[i].replace("ي","ى") + ' ';
+      } else if (unprocessed[i].endsWith("ة") || unprocessed[i].endsWith("ـة")) {
+        console.log("Suggestions tāʾ marbūṭa - ה & ת cases")
+        processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("ة", "ه").replace("ـة","ـه") + ' ';
+      } else if (unprocessed[i].indexOf("الما") > -1) {
+        processed = processed + "الماء" + ' ';
       } else {
         console.log("Un processed word");
         processed = processed + unprocessed[i] + ' ';
@@ -235,6 +243,23 @@ function transliterate() {
 
     document.getElementById("textarea2").value = resultAr;
     document.getElementById("textarea2").innerHTML = resultAr;
+  }
+}
+
+function vocalised() {
+  if (localStorage.getItem("vocalised") == 'NO' || localStorage.getItem("vocalised") == null || localStorage.getItem("vocalised") == undefined) {
+    localStorage.setItem("vocalised","YES");
+    document.getElementById("vocalised").classList.add('vocalised');
+    document.getElementById("vocalised").classList.remove('nonvocalised');
+    document.getElementById("vocalised").title = "Vocalised Text in Arabic";
+    document.getElementById("textarea2").value = vocalisedText;
+  } else if (localStorage.getItem("vocalised") == 'YES') {
+    localStorage.setItem("vocalised","NO");
+    document.getElementById("vocalised").classList.add('nonvocalised');
+    document.getElementById("vocalised").classList.remove('vocalised');
+    document.getElementById("vocalised").title = "Non-vocalised Text in Arabic";
+    vocalisedText = document.getElementById("textarea2").value;
+    document.getElementById("textarea2").value = document.getElementById("textarea2").value.replaceAll("\uFE70","").replaceAll("\uFE71","").replaceAll("\uFE72","").replaceAll("\uFE74","").replaceAll("\u08F0","").replaceAll("\u08F1","").replaceAll("\u08F2","").replaceAll("\u064C","").replaceAll("\u064D","").replaceAll("\u064B","").replaceAll("\u064E","").replaceAll("\u0618","").replaceAll("\uFE76","").replaceAll("\uFE77","").replaceAll("\u064F","").replaceAll("\u0619","").replaceAll("\uFE78","").replaceAll("\uFE79","").replaceAll("\u0650","").replaceAll("\uFE7A","").replaceAll("\uFE7B","").replaceAll("\u061A","").replaceAll("\uFE7E","").replaceAll("\u0652","").replaceAll("\uFC5E","").replaceAll("\uFC60","").replaceAll("\uFC61","").replaceAll("\uFC62","").replaceAll("\uFC63","").replaceAll("\uFCF2","").replaceAll("\uFCF3","").replaceAll("\uFCF4","").replaceAll("\uFC5F","").replaceAll("\u0651","").replaceAll("\uFE7D","").replaceAll("\uFE7C","").replaceAll("\u0670","");
   }
 }
 
