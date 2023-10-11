@@ -150,8 +150,8 @@ function transliterate() {
     for (let u = 0; u < textJud.length; u++) {
       if (textJud[u].indexOf("\n") > -1) { // New Lines
         resultAr = resultAr + "\n";
-      }  else if (typesOfWordDemarkers.indexOf(textJud[u+4]) > -1 && textJud[u+3] == "ה" && textJud[u+2] == "ל" && textJud[u+1] == "ל" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) {
-        console.log("nordafrikanischen - Texten אללה für اللّه")
+      } else if (typesOfWordDemarkers.indexOf(textJud[u+4]) > -1 && textJud[u+3] == "ה" && textJud[u+2] == "ל" && textJud[u+1] == "ל" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) {
+        console.log("Texten אללה für اللّه")
         resultAr = resultAr + "اللَّه";
         u = u + 3;
       } else if (typesOfWordDemarkers.indexOf(textJud[u+4]) > -1 && textJud[u+3] == "ל" && textJud[u+2] == "ו" && textJud[u+1] == "ו" && textJud[u] == "א" && typesOfWordDemarkers.indexOf(textJud[u-1]) > -1) { 
@@ -176,11 +176,16 @@ function transliterate() {
         u = u + 1;
       } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ה" && judeoToArabic[textJud[u]]) {
         console.log("Single letter tāʾ marbūṭa or character - ה case with suggestions")
-        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " : resultAr + "ـة ";
-        u = u + 1;
+        if (textJud[u-1] == "א") {
+          resultAr = resultAr + "ءة ";
+          u = u + 1;
+        } else {
+          resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " : resultAr + "ـة ";
+          u = u + 1;
+        }
       } else if (typesOfWordDemarkers.indexOf(textJud[u+1]) > -1 && textJud[u] && textJud[u] == "ת") {
         console.log("Single letter tāʾ marbūṭa or character - ת case with suggestions")
-        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ة " : resultAr + "ـة ";
+        resultAr = (nonjoining.indexOf(judeoToArabic[textJud[u-1]]) > -1) ? resultAr + "ةוֹ " : resultAr + "ـةוֹ ";
       } else if (textJud[u] == "ّ" && textJud[u-1] == "י") {
         console.log("Yod followed by Shadda then alef to be included")
         resultAr = resultAr + "ّ" + "ا";
@@ -203,6 +208,10 @@ function transliterate() {
       } else if (textJud[u] == "ס" && textJud[u-1] == "נ" && textJud[u-2] == "ו") {
         console.log("nicht emphatische Konsonanten und halb emphatisch selten Texte")
         resultAr = resultAr + "ص"; // in manchen Fällen werden auch emphatische Konsonanten nicht emphatisch geschrieben, oder nicht emphatische Konsonanten emphatisch z.B. ונס für ونص "und halb", dies ist jedoch eher eine seltene Ausnahme die mir bisher nur in marokkanischen Texten begegnet ist.
+      } else if (textJud[u+1] == "א" && textJud[u] == "ש") {
+        console.log("text having שא should be transliterated as شَاء")
+        resultAr = resultAr + "شاء";
+        u = u + 1;
       } else if (textJud[u] && judeoToArabic[textJud[u]]) {
         console.log("Single letter consonant or character")
         resultAr = resultAr + judeoToArabic[textJud[u]];
@@ -211,31 +220,44 @@ function transliterate() {
     let unprocessed = (resultAr != "") ? resultAr.split(" ") : resultAr;
     let processed = "";
     for (let i = 0; i < unprocessed.length; i++) {
-      /* if (unprocessed[i].indexOf("الا") > 0) {
-        console.log("Multi-word suggestion when beginning with الا ");
-        processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("الا","الأ") + ' ';
-      } else if (unprocessed[i].startsWith("ا")) {
-        console.log("Multi-word suggestion when beginning with ا ");
-        processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("ا","أ") + ' ';
-      } else */
-
       if (unprocessed[i].indexOf("غ") > -1) {
         console.log("Suggestions - גׄ case")
         processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("غ", "ج") + ' ';
-      }
-      
-      if (unprocessed[i].endsWith("ي")) {
-        console.log("Word end to be processed alef maksura")
-        processed = processed + unprocessed[i].replace("ي","ى") + ' ';
+      } 
+
+      if (unprocessed[i].endsWith("וֹ")) {
+        console.log("Suggestions tāʾ marbūṭa - ת cases")
+        processed = processed + unprocessed[i].replace("ةוֹ", "ة").replace("ـةוֹ","ـة") + ' ' + unprocessed[i].replace("ةוֹ", "ت").replace("ـةוֹ","ـت") + ' ';
       } else if (unprocessed[i].endsWith("ة") || unprocessed[i].endsWith("ـة")) {
-        console.log("Suggestions tāʾ marbūṭa - ה & ת cases")
+        console.log("Suggestions tāʾ marbūṭa - ה cases")
         processed = processed + unprocessed[i] + ' ' + unprocessed[i].replace("ة", "ه").replace("ـة","ـه") + ' ';
-      } else if (unprocessed[i].indexOf("الما") > -1) {
-        processed = processed + "الماء" + ' ';
       } else {
         console.log("Un processed word");
         processed = processed + unprocessed[i] + ' ';
       }
+      /* 
+        multiple form 'alef' ending
+        1. שא = شَاء : אלמא = الْمَاء
+        2. וסמא = وَسَمَّى
+        3. פלמא = فَلَمَّا  
+        
+        multiple form 'yod' ending
+        1. מצ̇י = مَضَى
+        2. עלי = عَلَى
+
+        Other unusual patterns
+         סמאהא ?
+
+      */
+      
+      /* if (unprocessed[i].indexOf("لل") > -1) { // Shadda for -ll-
+        processed = processed + unprocessed[i].replace("لل","لّ") + ' ';
+      }  */
+      /*
+        וסמא אללה אוקאת אלנור נהארא ואוקאת אלט̇לאם סמאהא לילא ולמא מצ̇י מן אלליל ואלנהאר יום ואחד 
+        وَسَمَّى اللَّه ُ أوْقَات النُّور نَهَارا وأوْقَات الظَّلام لَيْلاً وَلَمَّا مَضَى مِن اللَّيل والنَهَار يَوْم واحِد 
+      */
+      
     }
     // Clean-up extra 'kashida' / 'tatweel''
     processed = processed.replaceAll("\u0640","");
